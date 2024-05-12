@@ -20,7 +20,7 @@ At its core, gRPC is an implementation of RPC (Remote Procedure Call), allowing 
 
 Ready to explore the world of gRPC further? Check out the syntax of `.proto` files [here](https://protobuf.dev/programming-guides/proto3/) and dive into the basics of gRPC with resources like [this blog post](https://blog.postman.com/what-is-grpc/) and [this YouTube video](https://www.youtube.com/watch?v=gnchfOojMk4).
 
-Also could find the link for source code to know how to implement grpc in python based service.
+Also could find the link for source code to know how to implement grpc in python based service : [Github](https://github.com/vaibhavpareek/grpc/blob/main/post1%20-%20Exploring%20the%20Versatility%20of%20gRPC.md)
 
 ## Setting Up gRPC Server and Client in Python
 ### This guide walks you through the process of setting up a gRPC server and client in Python
