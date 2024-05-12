@@ -20,4 +20,98 @@ At its core, gRPC is an implementation of RPC (Remote Procedure Call), allowing 
 
 Ready to explore the world of gRPC further? Check out the syntax of `.proto` files [here](https://protobuf.dev/programming-guides/proto3/) and dive into the basics of gRPC with resources like [this blog post](https://blog.postman.com/what-is-grpc/) and [this YouTube video](https://www.youtube.com/watch?v=gnchfOojMk4).
 
+Also could find the link for source code to know how to implement grpc in python based service.
+
+## Setting Up gRPC Server and Client in Python
+### This guide walks you through the process of setting up a gRPC server and client in Python
+
+### Prerequisites
+Ensure you have Python installed on your system. You'll also need to install the following packages:
+```
+pip install grpcio grpcio-tools
+```
+### Step 1: Define Protocol Buffers (.proto) File
+Create a .proto file to define the service and message types. For example, let's create a user_management.proto file:
+```
+syntax = "proto3";
+
+service UserManagement {
+    rpc GetUserProfile (UserProfileRequest) returns (UserProfileResponse) {}
+}
+
+message UserProfileRequest {
+    string userId = 1;
+}
+
+message UserProfileResponse {
+    string name = 1;
+    string headline = 2;
+}
+```
+### Step 2: Generate Code from .proto File
+Use the protoc compiler to generate code in Python:
+```
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. user_management.proto
+```
+### Step 3: Implement Server
+Implement the server logic in Python. Here's an example user_management_server.py:
+```
+import grpc
+import user_management_pb2
+import user_management_pb2_grpc
+
+class UserManagementServicer(user_management_pb2_grpc.UserManagementServicer):
+    def GetUserProfile(self, request, context):
+        # Implement logic to fetch user profile based on request
+        user_profile = user_management_pb2.UserProfileResponse(
+            name="John Doe",
+            headline="Software Engineer"
+        )
+        return user_profile
+
+def serve():
+    server = grpc.server(grpc.ThreadPoolExecutor(max_workers=10))
+    user_management_pb2_grpc.add_UserManagementServicer_to_server(
+        UserManagementServicer(), server)
+    server.add_insecure_port('[::]:50051')
+    server.start()
+    server.wait_for_termination()
+
+if __name__ == '__main__':
+    serve()
+```
+
+### Step 4: Run the Server
+Run the gRPC server:
+```
+python user_management_server.py
+```
+
+### Step 5: Implement Client
+Implement the client logic in Python. Here's an example user_management_client.py:
+```
+import grpc
+import user_management_pb2
+import user_management_pb2_grpc
+
+def run():
+    channel = grpc.insecure_channel('localhost:50051')
+    stub = user_management_pb2_grpc.UserManagementStub(channel)
+    response = stub.GetUserProfile(user_management_pb2.UserProfileRequest(userId="123"))
+    print("User Profile:")
+    print("Name:", response.name)
+    print("Headline:", response.headline)
+
+if __name__ == '__main__':
+    run()
+```
+### Step 6: Run the Client
+Run the gRPC client:
+```
+python user_management_client.py
+```
+
 Stay tuned as we delve deeper into the advanced features and use cases of gRPC in our upcoming posts! 💡✨ #gRPC #InterServiceCommunication #RealTimeApplications #ProtocolBuffers
+
+
+
